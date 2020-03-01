@@ -14,17 +14,21 @@ import java.util.Set;
 
 public class ReviewHandler extends AbstractReviewHandler{
     
+    Map<Integer, MovieReview> data = getDatabase();
 
-    
+    ReviewScore dummyValue = new ReviewScore(0);
+
+
     public void loadReviews(String filePath, int realClass) {
         File pathFile = new File(filePath);
 
     }
 
+    
     public MovieReview readReview(String reviewFilePath, int realClass) throws IOException {
         System.out.println("readReview");
-        MovieReview tester = new MovieReview();
-        return tester;
+        MovieReview tester = new MovieReview(0, " ", " ", dummyValue, dummyValue );
+        return realClass;
     }
 
     public ReviewScore classifyReview(MovieReview review) {
@@ -41,6 +45,7 @@ public class ReviewHandler extends AbstractReviewHandler{
         System.out.println("saveDB");
     }
 
+
     public void loadDB() throws IOException {
         File data = new File("./dataBase.txt");
         try{
@@ -56,6 +61,19 @@ public class ReviewHandler extends AbstractReviewHandler{
             System.out.println("error");
         }
 
+        try{
+            Scanner scan = new Scanner(testFile);
+            while(scan.hasNextLine()){
+                temp = scan.nextLine();
+                MovieReview var1 = new MovieReview(id, testFile2, temp);
+                data.put(id, var1);
+                id++;
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("nope");
+        }
+
         
 
 
@@ -68,8 +86,14 @@ public class ReviewHandler extends AbstractReviewHandler{
         return tester;
     }
 
-    public List<MovieReview> searchBySubString(String substring){
-        System.out.println("searchBySubString");
+   // @Override
+    //public List<MovieReview> searchBySubString(String substring){
+      //  System.out.println("searchBySubString");
+    //}
+
+    public void tester(){
+        MovieReview var1 = data.get(0);
+        System.out.println("here: " + var1.getText());
     }
 
 
