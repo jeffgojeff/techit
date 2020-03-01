@@ -1,0 +1,5 @@
+testerGrading.cpp:9:25: error: expected ';' after expression
+    cout << var1 << endl
+                        ^
+                        ;
+1 error generated.
