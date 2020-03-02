@@ -17,19 +17,32 @@ import java.util.Set;
 
 
 
-public class testerMain{
+public class testerMain{   
     public static void main(String [] args){
 
         ReviewHandler rh = new ReviewHandler();
 
-        try {
+        //try {
             // Load database if it exists.
-            rh.loadDB();
+
+            String filePath = "./Movie-reviews/neg";
+            //String filePath = "./testerFile.txt";
+
+
+            //rh.loadDB();
+            //rh.tester();
+            //rh.tester2();
+
+            rh.loadReviews(filePath, 0);
             rh.tester();
+            rh.tester2();
+
+            /*
         } catch (IOException ex) {
             System.err.println("Error accessing the database file.");
             return;
         }
+        */
 
     }
 }

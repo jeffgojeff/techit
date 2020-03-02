@@ -91,7 +91,28 @@ public abstract class AbstractReviewHandler {
         }
         System.out.println("Hash set is of size " + dictionary.size());
     }
+
+    /**
+     * Loads reviews from a given path and stores them into the database. 
+     * If the given path is a .txt file, then a single review is loaded. 
+     * Otherwise, if the path is a folder, all reviews in it are loaded.
+     * This method calls the method classifyReview to classify each review.
+     * @param filePath The path to the file (or folder) containing the review.
+     * @param realClass The real class of the review (0 = Negative, 1 = Positive
+     * 2 = Unknown).
+     */
+    public abstract void loadReviews(String filePath, int realClass);
     
+    /**
+     * Reads a single review file and returns it as a MovieReview object. 
+     * @param reviewFilePath A path to a .txt file containing a review.
+     * @param realClass The real class entered by the user.
+     * @return a MovieReview object.
+     * @throws IOException if specified file cannot be opened.
+     
+    public abstract MovieReview readReview(String reviewFilePath, int realClass) 
+            throws IOException;
+    */
     
     
     /**

@@ -1,6 +1,10 @@
 package project1;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
 import java.io.Closeable;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,116 +12,105 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
-
+import java.util.ArrayList;
 
 public class ReviewHandler extends AbstractReviewHandler{
-    
-    Map<Integer, MovieReview> data = getDatabase();
-
-    //ReviewScore dummyValue = new ReviewScore(0);
-
-
+    @Override
     public void loadReviews(String filePath, int realClass) {
-        File pathFile = new File(filePath);
+        File file = new File(filePath);
+        boolean isFile = file.isFile();
+        boolean isDirectory = file.isDirectory();
+        int ID = 0;
+        String text = "";
+        String key = "Negative";int key2 = 2; // Fake vaules for review score
 
+        if(isFile == true) { //File found and one review is loaded
+            text = file.toString();
+            ID = 1;
+            MovieReview mr = new MovieReview(ID,filePath,text,ReviewScore.fromString(key),ReviewScore.fromInteger(key2));
+        }
+        else if (isDirectory == true) { // Folder was found and all reviews inside are added to the database
+            //private Map<Integer, MovieReview> database;
+            File folder = new File(filePath);
+            File[] listOfFiles = folder.listFiles();
+            for (File newFile : listOfFiles) {
+                if(newFile.isFile()) {
+                    text = newFile.toString();
+                    ID++;
+                    MovieReview mr = new MovieReview(ID,filePath,text,ReviewScore.fromString(key),ReviewScore.fromInteger(key2)); //Note** I dont know if we need to change the file path string for each file? 
+                    getDatabase().put(getReviewIdCounter(), mr);
+                }
+            }
+
+        }
+        else 
+            System.out.println("The fuck is this?!");
     }
-
-    
+    @Override
     public MovieReview readReview(String reviewFilePath, int realClass) throws IOException {
-        System.out.println("readReview");
-        MovieReview tester = new MovieReview(0, " ", " ", dummyValue, dummyValue );
-        return realClass;
+            System.out.println("Hello from read review");
+            int a = 1;String b = "", c = "";String key = "Negative";int key2 = 2;
+            MovieReview mr = new MovieReview(a,b,c,ReviewScore.fromString(key),ReviewScore.fromInteger(key2));
+            return mr;
     }
-
+    @Override
     public ReviewScore classifyReview(MovieReview review) {
-        System.out.println("classifyReview");
-        ReviewScore tester = new ReviewScore();
-        return tester;
+        System.out.println("Hello from classify review");
+        String key = "Negative"; return ReviewScore.fromString(key);
     }
-
+    @Override
     public void deleteReview(int id){
-        System.out.println("deleteReview");
+        System.out.println("hello from delete review");
     }
-
+    @Override
     public void saveDB() throws IOException {
-        System.out.println("saveDB");
-    }
-
-
-    //this should load all the values from dataBase.txt
-    //into data <- which is our hashmap
-    public void loadDB() throws IOException {
-        File data = new File("./dataBase.txt");
-        try{
-            File var1 = new File("./dataBase.txt");
-            if(var1.createNewFile()){
-                System.out.println("File created: " + var1.getName());
-            }
-            else{
-                System.out.println("File already exists");
-            }
-        }
-        catch (IOException e) {
-            System.out.println("error");
-        }
-
-        //verified with the files in tester that this works
-        //with multiple lines in the database.txt file
-        //and removes all punctuation and sets everything to 
-        //lowerCase before storing in our data hashSet.
-        try{
-            Scanner scan = new Scanner(testFile);
-            while(scan.hasNextLine()){
-                temp = scan.nextLine();
-                temp = temp.replaceAll("\\p{Punct}", "");
-                temp = temp.toLowerCase();
-                MovieReview var1 = new MovieReview(id, testFile2, temp);
-                data.put(id, var1);
-                id++;
-            }
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("nope");
-        }
-
-        
-
-
-
-    }
-
-    public MovieReview searchById(int id){
-        System.out.println("searchById");
-        MovieReview tester = new MovieReview();
-        return tester;
+        System.out.println("Save DB");
     }
 
     @Override
-    public List<MovieReview> searchBySubString(String substring){
-        System.out.println("searchBySubString");
+    public void loadDB() throws IOException{
+        
+        try{
+            
+            File var2 = new File(DATA_FILE_NAME);
+            if(var2.exists()){
+                Scanner scan = new Scanner(var2);
+                //System.out.println("top: " );
+                String temp = "";
+
+                while(scan.hasNextLine()){
+                    temp = scan.nextLine();
+                    temp = temp.replaceAll("\\p{Punct}", "");
+                    temp = temp.toLowerCase();
+                    String key = "Negative";int key2 = 2;
+                    MovieReview var1 = new MovieReview(getReviewIdCounter(), DATA_FILE_NAME, temp, ReviewScore.fromString(key),ReviewScore.fromInteger(key2));
+                    getDatabase().put(getReviewIdCounter(), var1);
+                    //System.out.println("");
+                    //System.out.println("testing object: " + var1.getText());
+                    //System.out.println(getReviewIdCounter());
+                    setReviewIdCounter(getReviewIdCounter() + 1);
+                }
+                //System.out.println("bottom:" );
+            }
+        }
+
+        catch (FileNotFoundException e) {
+            return;
+        }
     }
 
-    public void tester(){
-        MovieReview var1 = data.get(0);
-        System.out.println("here: " + var1.getText());
+
+    @Override
+    public MovieReview searchById(int id) {
+        System.out.println("Search by id");
+            int a = 1;String b = "";String c = "";String key = "Negative";int key2 = 2;
+            MovieReview mr = new MovieReview(a,b,c,ReviewScore.fromString(key),ReviewScore.fromInteger(key2));
+            return mr;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-
-
-
+    @Override
+    public List<MovieReview> searchBySubstring(String substring) {
+        System.out.println("search by substring");
+        return new ArrayList<MovieReview>();
+    }
+}   
