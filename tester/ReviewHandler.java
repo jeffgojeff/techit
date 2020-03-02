@@ -58,7 +58,7 @@ public class ReviewHandler extends AbstractReviewHandler{
                 temp = temp.toLowerCase();
                 MovieReview var1 = new MovieReview(id, testFile2, temp);
                 //Map<Integer, MovieReview> data = getDatabase();
-                data.put(id, var1);
+                getDatabase().put(id, var1);
                 System.out.println("");
                 System.out.println("testing object: " + var1.getText());
                 System.out.println(id);
@@ -79,7 +79,7 @@ public class ReviewHandler extends AbstractReviewHandler{
     }
 
     public void tester(){
-        MovieReview var1 = data.get(0);
+        MovieReview var1 = getDatabase().get(0);
         System.out.println("here: " + var1.getText());
         //System.out.println("database: " + database.text);
     }

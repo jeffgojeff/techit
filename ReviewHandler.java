@@ -16,7 +16,7 @@ public class ReviewHandler extends AbstractReviewHandler{
     
     Map<Integer, MovieReview> data = getDatabase();
 
-    ReviewScore dummyValue = new ReviewScore(0);
+    //ReviewScore dummyValue = new ReviewScore(0);
 
 
     public void loadReviews(String filePath, int realClass) {
@@ -46,6 +46,8 @@ public class ReviewHandler extends AbstractReviewHandler{
     }
 
 
+    //this should load all the values from dataBase.txt
+    //into data <- which is our hashmap
     public void loadDB() throws IOException {
         File data = new File("./dataBase.txt");
         try{
@@ -61,10 +63,16 @@ public class ReviewHandler extends AbstractReviewHandler{
             System.out.println("error");
         }
 
+        //verified with the files in tester that this works
+        //with multiple lines in the database.txt file
+        //and removes all punctuation and sets everything to 
+        //lowerCase before storing in our data hashSet.
         try{
             Scanner scan = new Scanner(testFile);
             while(scan.hasNextLine()){
                 temp = scan.nextLine();
+                temp = temp.replaceAll("\\p{Punct}", "");
+                temp = temp.toLowerCase();
                 MovieReview var1 = new MovieReview(id, testFile2, temp);
                 data.put(id, var1);
                 id++;
@@ -86,10 +94,10 @@ public class ReviewHandler extends AbstractReviewHandler{
         return tester;
     }
 
-   // @Override
-    //public List<MovieReview> searchBySubString(String substring){
-      //  System.out.println("searchBySubString");
-    //}
+    @Override
+    public List<MovieReview> searchBySubString(String substring){
+        System.out.println("searchBySubString");
+    }
 
     public void tester(){
         MovieReview var1 = data.get(0);
