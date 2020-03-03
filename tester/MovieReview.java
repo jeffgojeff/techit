@@ -14,12 +14,13 @@ public class MovieReview {
      * @param text
      * @param realScore 
      */
-    public MovieReview(int id, String filePath, String text) {
+    public MovieReview(int id, String filePath, String text, 
+            ReviewScore realScore, ReviewScore predictedScore) {
         this.id = id;
         this.filePath = filePath;
         this.text = text;
-        //this.realScore = realScore;
-        //this.predictedScore = predictedScore; // Set a default value. To be changed later.
+        this.realScore = realScore;
+        this.predictedScore = predictedScore; // Set a default value. To be changed later.
     }
 
     /**
@@ -50,32 +51,28 @@ public class MovieReview {
     /**
      * Getter method for accessing the predictedScore of a review.
      * @return predictedScore field
-     *
+     */
     public ReviewScore getPredictedScore() {
         return predictedScore;
     }
-    */
 
     /**
      * Setter method for setting the predictedScore of a review.
      * @param predictedScore.
-     *
+     */
     public void setPredictedScore(ReviewScore predictedScore) {
         this.predictedScore = predictedScore;
     }
-    
 
     /**
      * Getter method for accessing the realScore of a review.
      * @return realScore
-     *
+     */
     public ReviewScore getRealScore() {
         return realScore;
     }
 
-    /
-
-    ***********************************
+    
     /**
      * The id of the review (e.g. 2087).
      */
@@ -94,11 +91,11 @@ public class MovieReview {
     /**
      * The predicted score of the review (NEGATIVE, POSITIVE).
      */
-    //private ReviewScore predictedScore;
+    private ReviewScore predictedScore;
     
     /**
      * The ground truth score of the review (NEGATIVE, POSITIVE, UNKNOWN).
      */
-    //private final ReviewScore realScore;
+    private final ReviewScore realScore;
 
 }

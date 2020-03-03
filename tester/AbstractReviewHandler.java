@@ -91,6 +91,7 @@ public abstract class AbstractReviewHandler {
         }
         System.out.println("Hash set is of size " + dictionary.size());
     }
+    
 
     /**
      * Loads reviews from a given path and stores them into the database. 
@@ -109,10 +110,28 @@ public abstract class AbstractReviewHandler {
      * @param realClass The real class entered by the user.
      * @return a MovieReview object.
      * @throws IOException if specified file cannot be opened.
-     
+     */
     public abstract MovieReview readReview(String reviewFilePath, int realClass) 
             throws IOException;
-    */
+
+
+    /**
+     * Classifies a review as negative, or positive by using the text of the review.
+     * It updates the predictedPolarity value of the review object and it also
+     * returns the predicted polarity.
+     * Note: the classification is achieved by counting positive and negative words
+     * in the review text.
+     * @param review A review object.
+     * @return 0 = negative, 1 = positive.
+     */
+    public abstract ReviewScore classifyReview(MovieReview review);
+    
+
+    /**
+     * Deletes a review from the database, given its id.
+     * @param id The id value of the review.
+     */
+    public abstract void deleteReview(int id);
     
     
     /**
@@ -149,7 +168,7 @@ public abstract class AbstractReviewHandler {
      * Saves the database in the working directory as a text file (database.txt)
      * @throws java.io.IOException
      */
-   // public abstract void saveDB() throws IOException;
+    public abstract void saveDB() throws IOException;
     
 
     /**
@@ -165,7 +184,7 @@ public abstract class AbstractReviewHandler {
      * @return The review that matches the given id or null if the id does not 
      * exist in the database.
      */
-  //  public abstract MovieReview searchById(int id);
+    public abstract MovieReview searchById(int id);
     
 
     /**
@@ -173,7 +192,7 @@ public abstract class AbstractReviewHandler {
      * @param substring The substring to search for.
      * @return A list of review objects matching the search criterion.
      */
-   // public abstract List<MovieReview> searchBySubstring(String substring);
+    public abstract List<MovieReview> searchBySubstring(String substring);
 
 
     /**
