@@ -56,7 +56,6 @@ public class ReviewHandler extends AbstractReviewHandler{
                     return;
                 }
             }
-            System.out.println("total unknown: " + tester);
         }
     }
 
@@ -102,7 +101,7 @@ public class ReviewHandler extends AbstractReviewHandler{
             review.setPredictedScore(ReviewScore.fromInteger(2));
         else if(pos > neg)
             review.setPredictedScore(ReviewScore.fromInteger(1));
-        else if (neg < pos)
+        else if (neg > pos)
             review.setPredictedScore(ReviewScore.fromInteger(0));
         
     return null;
