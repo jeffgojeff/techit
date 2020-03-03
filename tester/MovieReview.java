@@ -14,8 +14,7 @@ public class MovieReview {
      * @param text
      * @param realScore 
      */
-    public MovieReview(int id, String filePath, String text, 
-            ReviewScore realScore, ReviewScore predictedScore) {
+    public MovieReview(int id, String filePath, String text, ReviewScore realScore, ReviewScore predictedScore) {
         this.id = id;
         this.filePath = filePath;
         this.text = text;

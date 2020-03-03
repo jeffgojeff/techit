@@ -14,26 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-import java.lang.String;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class ReviewHandler extends AbstractReviewHandler{
     
-    
+    int tester = 0;
 
 
-
-
-    
     @Override
-
     public void loadReviews(String filePath, int realClass) {
          
         File file = new File(filePath);
-        System.out.println("starting: ");
+        //System.out.println("starting: ");
 
         if(file.isFile()) { //File found and one review is loaded
             //catch the ioexception if thrown from readReview here
@@ -52,17 +45,19 @@ public class ReviewHandler extends AbstractReviewHandler{
 
         else if (file.isDirectory()) { // Folder was found and all reviews inside are added to the database
             
-            System.out.println("isDir: ");
+            //System.out.println("isDir: ");
             String[] reviewFiles = file.list();
 
             for(int i=0; i < reviewFiles.length; i++){
                 try{
-                    System.out.println("path: " + reviewFiles[i]);
+                    //System.out.println("path: " + reviewFiles[i]);
                     MovieReview var1 = readReview((filePath + reviewFiles[i]), realClass);
                     //store than in the dataBase
+                    //System.out.println("full path: " + filePath + reviewFiles[i]);
                     getDatabase().put(getReviewIdCounter(), var1);
                     //System.out.println("text: " + getDatabase().get(i).getText());
                     //System.out.println("ID: " + getDatabase().get(i).getId());
+                    //System.out.println("score: " + getDatabase().get(i).getPredictedScore());
                     //System.out.println("");
                     //increment id before proceeding
                     setReviewIdCounter(getReviewIdCounter() + 1);
@@ -72,8 +67,11 @@ public class ReviewHandler extends AbstractReviewHandler{
                 }
 
             }
+            System.out.println("total unknown: " + tester);
         }
     }
+
+
 
 
     @Override
@@ -92,7 +90,7 @@ public class ReviewHandler extends AbstractReviewHandler{
                 temp = temp.replaceAll("\\p{Punct}", "");
                 temp = temp.toLowerCase();
                 //System.out.println("readReview: " + temp);
-                MovieReview var1 = new MovieReview(getReviewIdCounter(), reviewFilePath, temp, ReviewScore.fromString("Unknown"),ReviewScore.fromInteger(realClass));
+                MovieReview var1 = new MovieReview(getReviewIdCounter(), reviewFilePath, temp, ReviewScore.fromInteger(realClass), ReviewScore.fromString("Unknown"));
                 classifyReview(var1);
                 return var1;
             }            
@@ -100,20 +98,20 @@ public class ReviewHandler extends AbstractReviewHandler{
 
         return null;
     }
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
     @Override
     public ReviewScore classifyReview(MovieReview review) {
 
         int pos = 0;
         int neg = 0;
-        //int count = 0;
+        int count = 0;
 
-        //System.out.println("getPositive: " + getPosWords());
-
-        //System.out.println("testing: " + review.getText());
         String[] arr1 = review.getText().split(" ");
 
          for(int i=0; i < arr1.length; i++) {
@@ -130,10 +128,11 @@ public class ReviewHandler extends AbstractReviewHandler{
         }
         //System.out.println("count: " + count);
 
-
-        if(pos == neg)
+        if(pos == neg){
             review.setPredictedScore(ReviewScore.fromInteger(2));
-        
+            tester++;
+        }
+
         else if(pos > neg)
             review.setPredictedScore(ReviewScore.fromInteger(1));
 
@@ -145,24 +144,30 @@ public class ReviewHandler extends AbstractReviewHandler{
         return null;
     
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
     @Override
-    public void deleteReview(int id){
-        System.out.println("hello from delete review");
+    public void deleteReview(int id){  
+        getDatabase().remove(id);
     }
+
+
+
+
+
     @Override
     public void saveDB() throws IOException {
-        System.out.println("Save DB");
+    
+        PrintWriter out = new PrintWriter(DATA_FILE_NAME);
+        for(MovieReview mr : getDatabase().values()){
+            out.println(mr.getText());
+        }
+
+        //System.out.println("Save DB");
+    
     }
 
 
@@ -176,7 +181,6 @@ public class ReviewHandler extends AbstractReviewHandler{
             File var2 = new File(DATA_FILE_NAME);
             if(var2.exists()){
                 Scanner scan = new Scanner(var2);
-                //System.out.println("top: " );
                 String temp = "";
 
                 while(scan.hasNextLine()){
@@ -188,7 +192,6 @@ public class ReviewHandler extends AbstractReviewHandler{
                     getDatabase().put(getReviewIdCounter(), var1);
                     setReviewIdCounter(getReviewIdCounter() + 1);
                 }
-                //System.out.println("bottom:" );
             }
         }
 
@@ -200,34 +203,24 @@ public class ReviewHandler extends AbstractReviewHandler{
 
     @Override
     public MovieReview searchById(int id) {
-        System.out.println("Search by id");
-            int a = 1;String b = "";String c = "";String key = "Negative";int key2 = 2;
-            MovieReview mr = new MovieReview(a,b,c,ReviewScore.fromString(key),ReviewScore.fromInteger(key2));
-            return mr;
+        return getDatabase().get(id);
     }
+
+
+
+
     @Override
     public List<MovieReview> searchBySubstring(String substring) {
-        System.out.println("search by substring");
-        return new ArrayList<MovieReview>();
+
+        List list = new ArrayList<MovieReview>();
+
+        for(int i=0; i < getDatabase().size(); i++){
+            if(getDatabase().get(i).getText().contains(substring)){
+                list.add(getDatabase().get(i));
+            }
+        }
+
+        return list;     
     }
 
-
-
-
-
-    // my functions
-
-    public void finished(){
-        System.out.println("program finished..");
-    }
-
-
-
-
-
-
-}
-
-
-
-
+}   

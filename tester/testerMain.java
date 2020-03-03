@@ -25,7 +25,7 @@ public class testerMain{
         //try {
             // Load database if it exists.
 
-            String filePath = "./Movie-reviews/pos/";
+            String filePath = "./Movie-reviews/neg/";
             //String filePath = "./testerFile.txt";
 
             String posFilePath = "./positive-words.txt";
@@ -38,9 +38,21 @@ public class testerMain{
 
             int userVar = 0;
 
-            
-            //rh.loadReviews(filePath, userVar);
+            try {
+                // Load the positive and negative words
+                rh.loadPosNegWords(posFilePath, negFilePath);
+            } catch (IOException ex) {
+                System.err.println("Could not load positive and negative words. "
+                        + "Please check that the file paths are correct and try again.");
+                return;
+            }
+
+
+            rh.loadReviews(filePath, userVar);
             //rh.showReview();
+            
+            
+            /*
             try{
                 MovieReview var1 = rh.readReview("./Movie-reviews/pos/2_9.txt", 0);
                 rh.loadPosNegWords(posFilePath, negFilePath);
@@ -50,6 +62,7 @@ public class testerMain{
             catch(IOException e){
                 System.out.println("caught");
             }
+            */
             
             
 

@@ -168,6 +168,8 @@ public class MovieReviewApp {
 
     public static void printTableContent(MovieReview mr) {
         // ADD THE MISSING CODE TO PRINT THE CONTENTS IN A FORMATTED MANNER.
+        System.out.println(mr.getId());
+        System.out.println(mr.getText());
     }
 
 }
