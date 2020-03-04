@@ -159,8 +159,12 @@ public class ReviewHandler extends AbstractReviewHandler{
 
         final PrintWriter out = new PrintWriter(DATA_FILE_NAME);
         for (final MovieReview mr : getDatabase().values()) {
-            out.println(mr.getText());
+            out.println(mr.getFilePath());
+            out.println(mr.getPredictedScore());
+            out.println(mr.getRealScore());
         }
+
+        close(out);
 
     }
 
@@ -177,16 +181,25 @@ public class ReviewHandler extends AbstractReviewHandler{
             if (var2.exists()) {
                 final Scanner scan = new Scanner(var2);
                 String temp = "";
+                String real = "";
+                String pred = "";
+                int realInt = 2;
 
                 // reading and organzing the text to be read by the program
                 while (scan.hasNextLine()) {
-                    temp = scan.nextLine();
-                    temp = temp.replaceAll("\\p{Punct}", "");
-                    temp = temp.toLowerCase();
-                    final String key = "Negative";
-                    final int key2 = 2;
-                    final MovieReview var1 = new MovieReview(getReviewIdCounter(), DATA_FILE_NAME, temp,
-                            ReviewScore.fromString(key), ReviewScore.fromInteger(key2));
+                    
+                    temp = scan.nextLine().toLowerCase();
+                    real = scan.nextLine();
+                    pred = scan.nextLine();
+                    
+                    if(real == "negative")
+                        realInt = 0;
+                    if(real == "positive")
+                        realInt = 1;
+
+                    MovieReview var1 = readReview(temp, realInt);
+                    var1.setPredictedScore(ReviewScore.fromString(pred));
+
                     getDatabase().put(getReviewIdCounter(), var1);
                     setReviewIdCounter(getReviewIdCounter() + 1);
                 }
