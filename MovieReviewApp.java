@@ -166,6 +166,10 @@ public class MovieReviewApp {
         System.out.println(line);
     }
 
+    /**
+     * Prints a line of infomation from the given review 
+     * @param mr takes a particular review fromt he database
+     */
     public static void printTableContent(MovieReview mr) {
         // ADD THE MISSING CODE TO PRINT THE CONTENTS IN A FORMATTED MANNER.
         System.out.printf("%-9s", mr.getId());
